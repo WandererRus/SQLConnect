@@ -14,7 +14,15 @@ namespace SQLConnect
         {
             SQLClass sql = new SQLClass();
             sql.OpenConnection();
-            SqlCommand commandselect = new SqlCommand("select * from Authors; select * from Books;", sql.GetConnection());
+            string TableName = Console.ReadLine();
+
+            SqlCommand commandselect = new SqlCommand(@"select * from @tablename; select * from Books;", sql.GetConnection());
+            SqlParameter parameterTableName = new SqlParameter();
+            parameterTableName.ParameterName = "tablename";
+            parameterTableName.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameterTableName.Value = TableName;
+            commandselect.Parameters.Add(parameterTableName);
+            //commandselect.Parameters.AddWithValue(TableName, parameterTableName);
             //sql.InsertCommand("insert into Books values (1003,'451C farengeit',400,150);");
             SqlDataReader reader;
             reader = commandselect.ExecuteReader();
@@ -29,7 +37,8 @@ namespace SQLConnect
             } 
             while ((reader = commandselect.ExecuteReader()) != null);
             reader.Close();
-            //sql.InsertCommand("insert into Books values (1003,'451C farengeit',400,150);");
+            string NameBook = "451C farengeit; drop table Authors;";
+            //sql.InsertCommand("insert into Books values (1003,'"+ NameBook + "',400,150);");
             //command.ExecuteReader();
             sql.CloseConnection();
             Console.ReadLine();

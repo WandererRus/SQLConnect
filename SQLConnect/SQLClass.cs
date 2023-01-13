@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlClient;
+using System.Configuration;
 
 namespace SQLConnect
 {
@@ -7,7 +8,9 @@ namespace SQLConnect
         SqlConnection connection = null;
         public SQLClass()
         {
-            string connectionString = @"Data Source = (localdb)\MSSQLLocalDB; Initial Catalog = Library;Integrated Security = True;";
+            string connectionString = ConfigurationManager.ConnectionStrings["localdbConnection"].ConnectionString;
+            /*string connectionString = @"Data Source = \\127.134.052.017\\SQLEXPRESS
+(localdb)\MSSQLLocalDB; Initial Catalog = Library;Integrated Security = False;User= Password=";*/
             connection = new SqlConnection(connectionString);
         }
         public SqlConnection GetConnection()
